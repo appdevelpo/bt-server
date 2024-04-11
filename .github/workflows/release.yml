@@ -2,7 +2,7 @@ on:
   push:
     tags:
       - v*
-      
+
 jobs:
   releases-matrix:
     name: Release Go Binary
@@ -36,7 +36,7 @@ jobs:
             goarch: amd64
     steps:
     - uses: actions/checkout@v3
-    - uses: wangyoucao577/go-release-action@v1.40
+    - uses: wangyoucao577/go-release-action@v1.49
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
