@@ -4,18 +4,27 @@ on:
       - v*
 
 jobs:
-  releases-matrix:
-    name: Release Go Binary
+  build:
+    name: Build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        goos: [linux, windows,android]
-        goarch: ["386", amd64, arm64, arm]
     steps:
-    - uses: actions/checkout@v3
-    - uses: wangyoucao577/go-release-action@v1.40
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        goos: ${{ matrix.goos }}
-        goarch: ${{ matrix.goarch }}
-        compress_assets: "OFF"
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Cross-Compile
+        uses: crazy-max/ghaction-xgo@v3
+        with:
+          xgo_version: latest
+          go_version: latest
+          platforms: linux/386,linux/amd64,linux/arm,linux/arm64,windows/386,windows/amd64,windows/arm,windows/arm64,android-21/arm,android-21/arm64,android-21/386,android-21/amd64
+          prefix: myproject
+          v: true
+          ldflags: -s -w
+          dest: build
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: binaries
+          path: build/
+          
