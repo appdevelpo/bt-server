@@ -23,12 +23,18 @@ jobs:
           ldflags: -s -w
           dest: build
 
-      - name: Create Release and Upload Assets
-        uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: ${{ github.ref_name }}
-          prerelease: false
-          title: 'Release ${{ github.ref_name }}'
-          files: |
-            build/*
+      # - name: Create Release and Upload Assets
+      #   uses: marvinpinto/action-automatic-releases@latest
+      #   with:
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #     automatic_release_tag: ${{ github.ref_name }}
+      #     prerelease: false
+      #     title: 'Release ${{ github.ref_name }}'
+      #     files: |
+            # build/*
+      - name: Release Packages
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "build/*
+        allowUpdates: true
+        omitBody: true
