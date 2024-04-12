@@ -12,19 +12,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: build android
+      - name: build android-arm64
         uses: wangyoucao577/go-release-action@v1.49
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: android
-          goarch: arm64
+          goarch: arm64-arm
+          compress_assets: "OFF"
+      - name: build android-arm
+        uses: wangyoucao577/go-release-action@v1.49
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: android
+          goarch: arm
           compress_assets: "OFF"
       - name: Cross-Compile
         uses: crazy-max/ghaction-xgo@v3
         with:
           xgo_version: latest
           go_version: latest
-          targets: ndroid/arm,android/arm64,android/386,android/amd64
+          targets: linux/386,linux/amd64,linux/arm,linux/arm64,windows/386,windows/amd64,windows/arm,windows/arm64,android-21/arm,android-21/arm64,android-21/386,android-21/amd64
           prefix: bt-server
           tags: ${{ github.ref_name }}
           v: true
