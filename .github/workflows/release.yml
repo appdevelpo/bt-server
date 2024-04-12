@@ -17,7 +17,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: android
-          goarch: arm64-arm
+          goarch: arm64
           compress_assets: "OFF"
       - name: build android-arm
         uses: wangyoucao577/go-release-action@v1.49
