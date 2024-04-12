@@ -12,7 +12,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+      - name: build android
+        uses: wangyoucao577/go-release-action@v1.49
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: android
+          goarch: arm64
+          compress_assets: "OFF"
       - name: Cross-Compile
         uses: crazy-max/ghaction-xgo@v3
         with:
