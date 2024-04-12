@@ -7,6 +7,10 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, windows, android]
+        goarch: [386, amd64, arm, arm64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -16,15 +20,29 @@ jobs:
         with:
           xgo_version: latest
           go_version: latest
-          platforms: linux/386,linux/amd64,linux/arm,linux/arm64,windows/386,windows/amd64,windows/arm,windows/arm64,android-21/arm,android-21/arm64,android-21/386,android-21/amd64
+          platforms: ${{ matrix.goos }}/${{ matrix.goarch }}
           prefix: myproject
           v: true
           ldflags: -s -w
           dest: build
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: binaries
-          path: build/
-          
+          tag_name: ${{ github.ref }}
+          release_name: bt-server-${{ github.ref }}-${{ matrix.goos }}-${{ matrix.goarch }}
+          draft: false
+          prerelease: false
+
+      # - name: Upload Release Asset
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./build/myproject-${{ github.ref }}-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
+      #     asset_name: myproject-${{ github.ref }}-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
+      #     asset_content_type: application/gzip
