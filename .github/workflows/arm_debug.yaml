@@ -28,7 +28,7 @@ jobs:
       - name: Install gcc and clang multilib
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-multilib g++-multilib clang
+          sudo apt-get install -y gcc-multilib g++-multilib clang  liblog4cplus-dev liblog4cpp5-dev
       - name: Build Go for Android ARM V-7A
         run: |
           CGO_ENABLED=1 \
