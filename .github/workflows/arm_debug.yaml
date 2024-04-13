@@ -43,7 +43,7 @@ jobs:
           GOOS=android \
           GOARCH=386 \
           CC=$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android21-clang \
-          LDFLAGS=-L$NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/i686-linux-android/21 include -llog\
+          LDFLAGS="-L$NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/i686-linux-android/21 include -llog"\
           go build -o build/bt-server-android-i386 -ldflags "-s -w" .
       - name: Build Go for Android x86_64
         run: |
@@ -51,7 +51,7 @@ jobs:
           GOOS=android \
           GOARCH=amd64 \
           CC=$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android21-clang \
-          LDFLAGS="$-LNDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/21" \
+          LDFLAGS="$-L$NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/21" \
           go build -o build/bt-server-android-x86_64 -ldflags "-s -w" .
       # - name: Cross-Compile
       #   uses: crazy-max/ghaction-xgo@v3
