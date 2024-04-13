@@ -17,21 +17,21 @@ jobs:
 
       - name: Install Android NDK
         run: |
-          wget https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip
-          unzip android-ndk-r21d-linux-x86_64.zip
-          echo "NDK=$(pwd)/android-ndk-r21d" >> $GITHUB_ENV
+          wget https://dl.google.com/android/repository/android-ndk-r26d-linux.zip
+          unzip android-ndk-r26d-linux.zip
+          echo "NDK=$(pwd)/android-ndk-r26d" >> $GITHUB_ENV
 
-      - name: Build Go for Android ARM
+      - name: Build Go for Android ARM V-7A
         run: |
           CGO_ENABLED=1 \
           GOOS=android \
           GOARCH=arm \
           CC=$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang \
           # CC_FOR_TARGET=$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang \
-          go build -o bt-server
+          go build -o build/bt-server-android-armv7a -ldflags "-s -w" .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: bt-server
-          path: bt-server
+          name: build/bt-server-android-armv7a
+          path: build/bt-server-android-armv7a
