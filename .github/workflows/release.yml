@@ -38,7 +38,7 @@ jobs:
         with:
           xgo_version: latest
           go_version: latest
-          targets: linux/386,linux/amd64,linux/arm,linux/arm64,windows/386,windows/amd64,windows/arm,windows/arm64,android-21/arm,android-21/arm64,android-21/386,android-21/amd64
+          # targets: linux/386,linux/amd64,linux/arm,linux/arm64,windows/386,windows/amd64,windows/arm,windows/arm64,android-21/arm,android-21/arm64,android-21/386,android-21/amd64
           prefix: bt-server
           tags: ${{ github.ref_name }}
           v: true
