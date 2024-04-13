@@ -33,5 +33,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: build/bt-server-android-armv7a
+          name: bt-server-android-armv7a
           path: build/bt-server-android-armv7a
