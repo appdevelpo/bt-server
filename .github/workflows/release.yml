@@ -12,20 +12,27 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: build android-arm64
+      - name: build android arm64
         uses: wangyoucao577/go-release-action@v1.49
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: android
           goarch: arm64
           compress_assets: "OFF"
-      - name: build android-arm
-        uses: wangyoucao577/go-release-action@v1.49
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          goos: android
-          goarch: arm
-          compress_assets: "OFF"
+          ldflags: "-s -w"
+      - name: Install Android NDK
+        run: |
+          wget https://dl.google.com/android/repository/android-ndk-r26d-linux.zip
+          unzip android-ndk-r26d-linux.zip
+          echo "NDK=$(pwd)/android-ndk-r26d" >> $GITHUB_ENV
+      - name: Build Go for Android ARM V-7A
+        run: |
+          CGO_ENABLED=1 \
+          GOOS=android \
+          GOARCH=arm \
+          CC=$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang \
+          # CC_FOR_TARGET=$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang \
+          go build -o build/bt-server-android-armv7a -ldflags "-s -w" .
       - name: Cross-Compile
         uses: crazy-max/ghaction-xgo@v3
         with:
@@ -37,7 +44,7 @@ jobs:
           v: true
           ldflags: -s -w
           dest: build
-
+      
       - name: Rename Files
         run: |
           for file in build/*; do
