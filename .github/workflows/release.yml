@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: build android arm64
+      - name: build Android Arm64
         uses: wangyoucao577/go-release-action@v1.49
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -33,7 +33,7 @@ jobs:
           CC=$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang \
           # CC_FOR_TARGET=$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang \
           go build -o build/bt-server-android-armv7a -ldflags "-s -w" .
-      - name: Cross-Compile
+      - name: Compile Window and Linux
         uses: crazy-max/ghaction-xgo@v3
         with:
           xgo_version: latest
